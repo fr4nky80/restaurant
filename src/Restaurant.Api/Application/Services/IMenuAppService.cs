@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Restaurant.Api.Application.Dtos;
+﻿using Restaurant.Api.Application.Dtos;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Restaurant.Api.Application.Services
@@ -12,7 +10,7 @@ namespace Restaurant.Api.Application.Services
         Task<ProductDto> UpsertProductAsync(ProductDto product);
         Task<bool> DeleteProductAsync(Guid productId);
         Task<bool> DeleteCategoryAsync(Guid categoryId);
-        Task<IEnumerable<CategoryDto>> GetCategoryAsync();
+        Task<PagedList<CategoryDto>> GetCategoriesAsync(PaginationDto paginationParameters);
         Task<CategoryDetailDto> GetCategoryDetailsAsync(Guid categoryId, PaginationDto paginationParameters);
     }
 }

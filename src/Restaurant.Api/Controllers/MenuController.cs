@@ -40,9 +40,23 @@ namespace Restaurant.Api.Controllers
         }
 
         [HttpGet("categories")]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories([FromQuery] PaginationDto paginationParameters)
         {
-            return Ok(await _menuAppService.GetCategoryAsync());
+
+            var result = await _menuAppService.GetCategoriesAsync(paginationParameters);
+            var metadata = new
+            {
+                result.TotalCount,
+                result.PageSize,
+                result.CurrentPage,
+                result.TotalPages,
+                result.HasNext,
+                result.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            return Ok(result);
         }
 
         [HttpPost("category"),

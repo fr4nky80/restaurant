@@ -27,6 +27,17 @@ namespace Restaurant.Api
         {
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: OriginsName,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:3000")
+                                             .AllowAnyHeader()
+                                             .AllowAnyMethod();
+                                  });
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>
@@ -39,16 +50,7 @@ namespace Restaurant.Api
             services.AddScoped<IMenuAppService, MenuAppService>();
             services.AddScoped<IRestaurantAppService, RestaurantAppService>();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: OriginsName,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:3000")
-                                             .AllowAnyHeader()
-                                             .AllowAnyMethod();
-                                  });
-            });
+          
 
             services.AddDbContext<RestaurantContext>(options => options.UseSqlite("Data Source=restaurant.db"));
         }
@@ -66,6 +68,8 @@ namespace Restaurant.Api
                 app.UseHsts();
             }
 
+            app.UseCors(OriginsName);
+
             app.UseHttpsRedirection();
             app.UseMvc();
 
@@ -76,7 +80,7 @@ namespace Restaurant.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Restaurant Api V1");
             });
 
-            app.UseCors(OriginsName);
+            
 
         }
     }

@@ -1,77 +1,107 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
 import MaterialTable from 'material-table';
+import Localization from '../localization/local.es'
 
-const columns = [
-  { id: 'name', label: 'Categoría', minWidth: 170 },
-];
+class ListCategories extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      columns:  [
+        { title: 'Nombre', field: 'name' }
+      ], 
+      data: [],
+      page: 1,
+      totalCount: 1
+    } 
+  }
 
-function createData(name) {
-  return { name };
-}
+  componentWillMount() {
+    fetch('https://localhost:5001/api/Menu/categories')
+      .then((response) => {
+        this.setState({page: response.headers["page"]});
+        this.setState({totalCount: response.headers["totalCount"]});
+        return response.json()
+      })
+      .then((categories) => {
+        this.setState({ 
+          data: categories,
+          page: this.state.page,
+          totalCount: this.state.totalCount
+         })
+      })
+  }
 
-const rows = [
-  createData('Carnes'),
-  createData('Pescados'),
-  createData('Entrantes'),
-  createData('Postres'),
-  createData('Vinos'),
-  createData('Mariscos'),
-];
+    render() {
+      return (
+        <MaterialTable
+            title="Categorías"
+            columns={this.state.columns}
+            data={this.state.data}
+            editable={{
+              onRowAdd: newData => {
+                new Promise((resolve, reject) => {
+                  let url = 'https://localhost:5001/api/Menu/category'
+                  fetch (url, {
+                    method: 'POST',
+                    body: JSON.stringify(newData),
+                    headers:{
+                      'Content-Type': 'application/json'
+                    }
+                  })
+                    .then(response => {
+                     
+                      return response.json()
+                    })
+                    .then(result => {
+                      const data = this.state.data;
+                      data.push(newData);
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  container: {
-    maxHeight: 440,
-  },
-});
-
-export default function ListCategories() {
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  return (
-    <MaterialTable
-        title="Remote Data Preview"
-        columns={[
-          { title: 'Id', field: 'categoryId' },
-          { title: 'Categoría', field: 'name' }
-        ]}
-        data={query =>
-          new Promise((resolve, reject) => {
-            let url = 'https://localhost:5001/api/Menu/categories'
-            fetch(url)
-              .then(response => response.json())
-              .then(result => {
-                console.log(result);
-                resolve({
-                  data: result,
-                  page: 1,
-                  totalCount: 1 // total row number
+                      this.setState({ data: data }, () => resolve())
+                    })
+    
                 })
-              })
-          })
-        }
-      />
-  );
-}
+              },
+              onRowUpdate: (newData, oldData) => {
+                new Promise((resolve, reject) => {
+                  let url = 'https://localhost:5001/api/Menu/category'
+                  fetch (url, {
+                    method: 'PUT',
+                    body: JSON.stringify(newData),
+                    headers:{
+                      'Content-Type': 'application/json'
+                    }
+                  })
+                    .then(response => response.json())
+                    .then(result => {
+                      const data = this.state.data;
+                      const index = data.indexOf(oldData);
+                      data[index] = newData; 
+                      this.setState({ data: data }, () => resolve())
+                    })
+    
+                })
+              },
+              onRowDelete: (oldData)=>{
+                new Promise((resolve, reject) => {
+                  let url = 'https://localhost:5001/api/Menu/category/'+oldData.categoryId
+                  fetch (url, {
+                    method: 'DELETE'
+                  })
+                    .then(response => response.json())
+                    .then(result => {
+                      let data = this.state.data;
+                      const index = data.indexOf(oldData);
+                      data.splice(index, 1);
+                      this.setState({ data: data }, () => resolve())
+                    })
+                })
+              }
+            }}
+            localization={Localization}
+          />
+      );
+    }
+  }
+
+
+export default ListCategories;

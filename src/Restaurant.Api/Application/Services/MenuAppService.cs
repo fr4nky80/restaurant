@@ -4,7 +4,6 @@ using Restaurant.Api.Application.Dtos;
 using Restaurant.Api.Infrastructure.Data;
 using Restaurant.Api.Infrastructure.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -55,7 +54,11 @@ namespace Restaurant.Api.Application.Services
 
         public async Task<CategoryDto> UpsertCategoryAsync(CategoryDto category)
         {
-            var categoryDomain = _context.Categories.FirstOrDefault(p => p.CategoryId == category.CategoryId);
+
+            Category categoryDomain = null;
+
+            if (category.CategoryId != Guid.Empty)
+                categoryDomain = _context.Categories.FirstOrDefault(p => p.CategoryId == category.CategoryId);
 
             if (categoryDomain == null)
             {
@@ -91,6 +94,8 @@ namespace Restaurant.Api.Application.Services
                 if (product == null) return true;
                 _context.Remove(product);
 
+                await _context.SaveChangesAsync();
+
                 return true;
             }
             catch
@@ -107,6 +112,8 @@ namespace Restaurant.Api.Application.Services
                 if (category == null) return true;
                 _context.Remove(category);
 
+                await _context.SaveChangesAsync();
+
                 return true;
             }
             catch
@@ -115,11 +122,15 @@ namespace Restaurant.Api.Application.Services
             }
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetCategoryAsync()
+        public async Task<PagedList<CategoryDto>> GetCategoriesAsync(PaginationDto paginationParameters)
         {
-            var result = await _context.Categories.ToListAsync();
+            var categories = PagedList<Category>
+              .ToPagedList<Category, CategoryDto>(_context.Categories.OrderBy(on => on.Name),
+                                                paginationParameters.PageNumber,
+                                                paginationParameters.PageSize,
+                                                _mapper);
 
-            return _mapper.Map<IEnumerable<CategoryDto>>(result);
+            return categories;
         }
 
         public async Task<CategoryDetailDto> GetCategoryDetailsAsync(Guid categoryId, PaginationDto paginationParameters)

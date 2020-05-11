@@ -1,3 +1,6 @@
 [0510/232441.560:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
 [0510/232441.567:ERROR:registration_protocol_win.cc(131)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
 [0510/232441.568:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
+[0511/225322.987:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)
+[0511/225322.994:ERROR:registration_protocol_win.cc(131)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0511/225322.995:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: El sistema no puede encontrar la ruta especificada. (0x3)

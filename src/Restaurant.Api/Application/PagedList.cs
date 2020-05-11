@@ -15,8 +15,6 @@ namespace Restaurant.Api.Application
 		public bool HasPrevious => CurrentPage > 1;
 		public bool HasNext => CurrentPage < TotalPages;
 
-		public List<T> Items { get; private set; }
-
 		public PagedList(List<T> items, int count, int pageNumber, int pageSize)
 		{
 			TotalCount = count;
