@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import SimpleBottomNavigation from './components/Menu'
 import SimpleTabs from './components/Tabs'
-import 'typeface-roboto';
 
 class App extends Component {
   render() {
