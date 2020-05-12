@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Button from '@material-ui/core/Button';
-import StickyHeadTable from './components/ListCategories'
 import SimpleBottomNavigation from './components/Menu'
 import SimpleTabs from './components/Tabs'
+import 'typeface-roboto';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         <SimpleTabs />
           <br />
           <SimpleBottomNavigation />
