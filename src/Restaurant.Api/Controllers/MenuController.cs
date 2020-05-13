@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Restaurant.Api.Application;
 using Restaurant.Api.Application.Dtos;
 using Restaurant.Api.Application.Services;
 using System;
@@ -40,7 +41,7 @@ namespace Restaurant.Api.Controllers
         }
 
         [HttpGet("categories")]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories([FromQuery] PaginationDto paginationParameters)
+        public async Task<ActionResult<PagedList<CategoryDto>>> GetCategories([FromQuery] PaginationDto paginationParameters)
         {
 
             var result = await _menuAppService.GetCategoriesAsync(paginationParameters);

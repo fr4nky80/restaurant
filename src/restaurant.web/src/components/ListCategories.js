@@ -1,8 +1,11 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import Localization from '../localization/local.es'
+import Typography from '@material-ui/core/Typography';
+import API from '../Api/api';
 
 class ListCategories extends React.Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -14,88 +17,78 @@ class ListCategories extends React.Component {
       totalCount: 1
     } 
   }
-
-  componentWillMount() {
-    fetch('https://localhost:5001/api/Menu/categories')
-      .then((response) => {
-        this.setState({page: response.headers["page"]});
-        this.setState({totalCount: response.headers["totalCount"]});
-        return response.json()
-      })
-      .then((categories) => {
-        this.setState({ 
-          data: categories,
-          page: this.state.page,
-          totalCount: this.state.totalCount
-         })
-      })
-  }
-
     render() {
       return (
         <MaterialTable
-            title="Categorías"
+            title={<div> <Typography  variant="h6">Categorías</Typography> </div>}
             columns={this.state.columns}
-            data={this.state.data}
-            editable={{
-              onRowAdd: newData => {
-                new Promise((resolve, reject) => {
-                  let url = 'https://localhost:5001/api/Menu/category'
-                  fetch (url, {
-                    method: 'POST',
-                    body: JSON.stringify(newData),
-                    headers:{
-                      'Content-Type': 'application/json'
-                    }
+            data={
+              query =>  new Promise((resolve) => 
+              {
+                API.get(`api/Menu/categories?PageSize=${query.pageSize}&PageNumber=${query.page+1}&searchPattern=${query.search}`)
+                .then(res => {
+                    resolve({
+                      data:  res.data.data,
+                      page: res.data.currentPage-1,
+                      totalCount: res.data.totalCount
+                    });  
+                    this.setState({ 
+                      data: res.data.data,
+                      page: res.data.currentPage,
+                      totalCount: res.data.totalCount
+                    }, () => resolve())
+                    
                   })
-                    .then(response => {
-                     
-                      return response.json()
-                    })
-                    .then(result => {
+                  
+              })
+            }
+            editable={{
+              onRowAdd: newData => 
+                new Promise(resolve => {
+                  setTimeout(() => {
+                    {
                       const data = this.state.data;
                       data.push(newData);
-
-                      this.setState({ data: data }, () => resolve())
-                    })
-    
-                })
-              },
-              onRowUpdate: (newData, oldData) => {
-                new Promise((resolve, reject) => {
-                  let url = 'https://localhost:5001/api/Menu/category'
-                  fetch (url, {
-                    method: 'PUT',
-                    body: JSON.stringify(newData),
-                    headers:{
-                      'Content-Type': 'application/json'
+                      // this.setState({ data, page, totalCount }, () => resolve());
+                      console.log(this.state.data);
                     }
-                  })
-                    .then(response => response.json())
-                    .then(result => {
-                      const data = this.state.data;
-                      const index = data.indexOf(oldData);
-                      data[index] = newData; 
-                      this.setState({ data: data }, () => resolve())
-                    })
-    
-                })
-              },
-              onRowDelete: (oldData)=>{
-                new Promise((resolve, reject) => {
-                  let url = 'https://localhost:5001/api/Menu/category/'+oldData.categoryId
-                  fetch (url, {
-                    method: 'DELETE'
-                  })
-                    .then(response => response.json())
-                    .then(result => {
+                    resolve()
+                  API.post(`api/Menu/category`, newData)
+                      .then(res => console.log(res.data));
+              }, 600);
+              this.tableRef.current && this.tableRef.current.onQueryChange()
+              }),
+              onRowUpdate: (newData, oldData) => 
+                new Promise(resolve => {
+                  setTimeout(() => {
+               {
+                    const data = this.state.data;
+                    const index = oldData.tableData.id;
+                    data[index] = newData;
+                     this.setState({ data }, () => resolve());
+                    console.log(this.state.data);
+                    console.log(newData);
+               }
+               resolve()
+                  API.put(`api/Menu/category`, newData)
+                      .then(res => console.log(res.data));
+              }, 600);
+              this.tableRef.current && this.tableRef.current.onQueryChange()
+            }),
+              onRowDelete: (oldData)=> 
+                new Promise(resolve => {
+                  setTimeout(() => {
+                    {
                       let data = this.state.data;
-                      const index = data.indexOf(oldData);
+                      const index = oldData.tableData.id;
                       data.splice(index, 1);
-                      this.setState({ data: data }, () => resolve())
-                    })
-                })
-              }
+                      console.log(this.state.data);
+                    }
+                    resolve()
+                  API.delete(`api/Menu/category/${oldData.categoryId}`)
+                      .then(res => console.log(res.data));
+              }, 600);
+              })
             }}
             localization={Localization}
           />

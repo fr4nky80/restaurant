@@ -122,22 +122,24 @@ namespace Restaurant.Api.Application.Services
             }
         }
 
-        public async Task<PagedList<CategoryDto>> GetCategoriesAsync(PaginationDto paginationParameters)
+        public Task<PagedList<CategoryDto>> GetCategoriesAsync(PaginationDto paginationParameters)
         {
-            var categories = PagedList<Category>
-              .ToPagedList<Category, CategoryDto>(_context.Categories.OrderBy(on => on.Name),
-                                                paginationParameters.PageNumber,
-                                                paginationParameters.PageSize,
-                                                _mapper);
+            IQueryable<Category> query = _context.Categories.OrderBy(on => on.Name);
+            if (!string.IsNullOrEmpty(paginationParameters.SearchPattern))
+            {
+                query.Where(p => p.Name.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper()));
+            }
+            var result = query.ToPagedList<Category, CategoryDto>(paginationParameters.PageNumber,
+                                                                                paginationParameters.PageSize,
+                                                                                _mapper);
 
-            return categories;
+            return Task.FromResult(result);
         }
 
         public async Task<CategoryDetailDto> GetCategoryDetailsAsync(Guid categoryId, PaginationDto paginationParameters)
         {
 
-            var products = PagedList<Product>
-                .ToPagedList<Product, ProductDto>(_context.Products.OrderBy(on => on.Title),
+            var products = _context.Products.OrderBy(on => on.Title).ToPagedList<Product, ProductDto>(
                                                   paginationParameters.PageNumber,
                                                   paginationParameters.PageSize,
                                                   _mapper);

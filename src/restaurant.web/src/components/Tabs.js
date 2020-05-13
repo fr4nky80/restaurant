@@ -50,31 +50,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SimpleTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  // const classes = useStyles();
+  // const [value, setValue] = React.useState(0);
+  
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Categorias" {...a11yProps(0)} />
-          <Tab label="Productos" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        <ListCategories />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-      <ListProducts />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </div>
+    // <div className={classes.root}>
+    //   <AppBar position="static">
+    //     <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+    //       <Tab label="Categorias" {...a11yProps(0)} />
+    //       <Tab label="Productos" {...a11yProps(1)} />
+    //       <Tab label="Item Three" {...a11yProps(2)} />
+    //     </Tabs>
+    //   </AppBar>
+    //   <TabPanel value={value} index={0}>
+    //     <ListCategories />
+    //   </TabPanel>
+    //   <TabPanel value={value} index={1}>
+    //   <ListProducts />
+    //   </TabPanel>
+    //   <TabPanel value={value} index={2}>
+    //     Item Three
+    //   </TabPanel>
+    // </div>
+    <ListCategories />
   );
 }

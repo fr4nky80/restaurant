@@ -1,11 +1,10 @@
-﻿namespace Restaurant.Api.Application.Dtos
+﻿namespace Restaurant.Razor.Dtos
 {
 	public class PaginationDto
     {
 		const int maxPageSize = 50;
 		public int PageNumber { get; set; } = 1;
 
-		public string SearchPattern { get; set; }
 		private int _pageSize = 10;
 		public int PageSize
 		{
