@@ -11,6 +11,7 @@ namespace Restaurant.Api.Application.Services
         Task<bool> DeleteProductAsync(Guid productId);
         Task<bool> DeleteCategoryAsync(Guid categoryId);
         Task<PagedList<CategoryDto>> GetCategoriesAsync(PaginationDto paginationParameters);
+        Task<PagedList<ProductDto>> GetProductsAsync(PaginationDto paginationParameters);
         Task<CategoryDetailDto> GetCategoryDetailsAsync(Guid categoryId, PaginationDto paginationParameters);
     }
 }

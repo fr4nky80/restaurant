@@ -16,8 +16,13 @@ namespace Restaurant.Api.Controllers
             _restaurantAppService = restaurantAppService ?? throw new System.ArgumentNullException(nameof(restaurantAppService));
         }
 
-
         [HttpGet]
+        public async Task<IActionResult> GetConfigs([FromQuery] PaginationDto paginationParameters)
+        {
+            return Ok(await _restaurantAppService.GetConfigsAsync(paginationParameters));
+        }
+
+        [HttpGet("default")]
         public async Task<IActionResult> GetDefaultConfig()
         {
             return Ok(await _restaurantAppService.GetDefaultConfigAsync());

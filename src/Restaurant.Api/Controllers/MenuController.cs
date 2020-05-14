@@ -45,17 +45,15 @@ namespace Restaurant.Api.Controllers
         {
 
             var result = await _menuAppService.GetCategoriesAsync(paginationParameters);
-            var metadata = new
-            {
-                result.TotalCount,
-                result.PageSize,
-                result.CurrentPage,
-                result.TotalPages,
-                result.HasNext,
-                result.HasPrevious
-            };
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(result);
+        }
+
+        [HttpGet("products")]
+        public async Task<ActionResult<PagedList<ProductDto>>> GetProducts([FromQuery] PaginationDto paginationParameters)
+        {
+
+            var result = await _menuAppService.GetProductsAsync(paginationParameters);
 
             return Ok(result);
         }

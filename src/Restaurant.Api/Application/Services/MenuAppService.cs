@@ -127,7 +127,11 @@ namespace Restaurant.Api.Application.Services
             IQueryable<Category> query = _context.Categories.OrderBy(on => on.Name);
             if (!string.IsNullOrEmpty(paginationParameters.SearchPattern))
             {
-                query.Where(p => p.Name.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper()));
+                query = query.Where(p => 
+                p.Name.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper())
+                || p.SubTitle.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper())
+                || p.Description.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper())
+                );
             }
             var result = query.ToPagedList<Category, CategoryDto>(paginationParameters.PageNumber,
                                                                                 paginationParameters.PageSize,
@@ -152,6 +156,23 @@ namespace Restaurant.Api.Application.Services
             categoryResult.Products = products;
 
             return categoryResult;
+        }
+
+        public Task<PagedList<ProductDto>> GetProductsAsync(PaginationDto paginationParameters)
+        {
+            IQueryable<Product> query = _context.Products.OrderBy(on => on.Title);
+            if (!string.IsNullOrEmpty(paginationParameters.SearchPattern))
+            {
+                query = query.Where(p =>
+                p.Title.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper())
+                || p.Description.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper())
+                );
+            }
+            var result = query.ToPagedList<Product, ProductDto>(paginationParameters.PageNumber,
+                                                                                paginationParameters.PageSize,
+                                                                                _mapper);
+
+            return Task.FromResult(result);
         }
     }
 }

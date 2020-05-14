@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Api.Application.Dtos;
 using Restaurant.Api.Infrastructure.Data;
 using Restaurant.Api.Infrastructure.Models;
 using System;
-using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Restaurant.Api.Application.Services
@@ -67,6 +66,21 @@ namespace Restaurant.Api.Application.Services
             result.IsDefault = isDefault;
 
             await _context.RestaurantConfigs.AddAsync(result);
+        }
+
+        public Task<PagedList<RestaurantConfigDto>> GetConfigsAsync(PaginationDto paginationParameters)
+        {
+            IQueryable<RestaurantConfig> query = _context.RestaurantConfigs.OrderBy(on => on.RestaurantName);
+            if (!string.IsNullOrEmpty(paginationParameters.SearchPattern))
+            {
+                query = query.Where(p =>
+                p.RestaurantName.ToUpper().Contains(paginationParameters.SearchPattern.ToUpper()));
+            }
+            var result = query.ToPagedList<RestaurantConfig, RestaurantConfigDto>(paginationParameters.PageNumber,
+                                                                                paginationParameters.PageSize,
+                                                                                _mapper);
+
+            return Task.FromResult(result);
         }
     }
 }
