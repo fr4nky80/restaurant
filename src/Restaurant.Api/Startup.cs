@@ -32,9 +32,7 @@ namespace Restaurant.Api
                 options.AddPolicy(name: OriginsName,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:3000")
-                                             .AllowAnyHeader()
-                                             .AllowAnyMethod();
+                                      builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                                   });
             });
 
