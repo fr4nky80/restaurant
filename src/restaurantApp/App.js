@@ -1,88 +1,43 @@
 import 'react-native-gesture-handler';
-import React, {Component} from 'react';
-import {FlatList, StyleSheet, View, Text} from 'react-native';
+import React, {useState, useEffect}  from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
+import {ProductScreen} from './pages/Products/products';
 import API from './api/restaurant';
-
-function ProductScreen() {
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={[
-          {key: 'Devin'},
-          {key: 'Dan'},
-          {key: 'Dominic'},
-          {key: 'Jackson'},
-          {key: 'James'},
-          {key: 'Joel'},
-          {key: 'John'},
-          {key: 'Jillian'},
-          {key: 'Jimmy'},
-          {key: 'Julie'},
-        ]}
-        renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 22,
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-});
-
-// let routeConfig = {};
-
-// categories.map(category => {
-//     routeConfig[category.key] = {
-//         screen: CategoryScreen, // your template screen, common to every item
-//         navigationOptions: (props) => {
-//             props.navigation.setParams({ category });
-//         }
-//     }
-// });
+import {Header} from 'react-native';
 
 const Drawer = createDrawerNavigator();
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      categories: [],
-      categorySelected: null,
+export default function App(){
+  const [data, setCategories] = useState([]);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsError(false);
+      try {
+        const result = await API.get('api/Menu/categories');
+        setCategories(result.data.data);
+        console.log(result.data.data);
+      } catch (error) {
+        setIsError(true);
+      }
     };
-  }
 
-  async componentDidMount() {
-    try {
-      const res = await API.get('api/Menu/categories');
-      this.setState({categories: res.data.data});
-      console.log(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    fetchData();
+  }, []);
 
-  render() {
-    return (
-      <NavigationContainer>
-        <Drawer.Navigator>
-          {this.state.categories.map((category) => (
-            <Drawer.Screen
-              name={category.name}
-              component={ProductScreen}
-              options={{categoryId: category.categoryId}}
-            />
-          ))}
-        </Drawer.Navigator>
-      </NavigationContainer>
-    );
-  }
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator>
+        {data.map((category) => (
+          <Drawer.Screen
+            name={category.name}
+            component={ProductScreen}
+            initialParams={{categoryId: category.categoryId}}
+          />
+        ))}
+        <Drawer.Screen name="prueba" component={ProductScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
 }

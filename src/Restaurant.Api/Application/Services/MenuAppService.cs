@@ -143,7 +143,7 @@ namespace Restaurant.Api.Application.Services
         public async Task<CategoryDetailDto> GetCategoryDetailsAsync(Guid categoryId, PaginationDto paginationParameters)
         {
 
-            var products = _context.Products.OrderBy(on => on.Title).ToPagedList<Product, ProductDto>(
+            var products = _context.Products.OrderBy(on => on.Title).Where(p => p.CategoryId==categoryId).ToPagedList<Product, ProductDto>(
                                                   paginationParameters.PageNumber,
                                                   paginationParameters.PageSize,
                                                   _mapper);
