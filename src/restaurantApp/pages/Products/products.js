@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import API from '../../api/restaurant';
 import {FlatList, StyleSheet, View, Text, Image} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import {ProductItem} from './item';
+import ProductItem from './item';
 
 function LogoTitle() {
   return (
@@ -26,6 +26,7 @@ export const ProductScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       setCategory(route.params.categoryId);
+      console.log(categoryId);
       setIsError(false);
       try {
         const url = `/api/Menu/category/${categoryId}/details`;
@@ -47,7 +48,7 @@ export const ProductScreen = () => {
         {/* <LogoTitle /> */}
         <FlatList
           data={data}
-          renderItem={({item}) => <ProductItem  {...item} />}
+          renderItem={({item}) => <ProductItem item={item} />}
         />
       </View>
     </>
@@ -65,6 +66,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Iowan Old Style',
     height: 44,
     textTransform: 'uppercase',
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
 });
