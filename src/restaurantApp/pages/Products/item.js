@@ -6,7 +6,7 @@ export default function ProductItem({item}) {
      <View>
        <View style={styles.item}>
          <Text style={styles.title}>{item.title}</Text>
-         <Text style={styles.price}>{item.price}</Text>
+         <Text style={styles.price}>{item.price} €</Text>
        </View>
        <Text style={styles.subtitle}>{item.description}</Text>
      </View>
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 20,
-    width: 70
+    width: 70,
+    textAlignVertical: "center"
   },
 });
