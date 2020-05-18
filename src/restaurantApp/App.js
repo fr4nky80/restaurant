@@ -1,9 +1,12 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ProductScreen} from './pages/Products/products';
 import API from './api/restaurant';
+
+const Navigator = createStackNavigator();
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -31,9 +34,16 @@ export default function App() {
   return (
     <NavigationContainer>
       {isLoaded && (
-        <Drawer.Navigator>
+        <Drawer.Navigator
+          drawerStyle={{
+            backgroundColor: '#FFFFFF',
+            width: 240,
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
           {data.map((category) => (
-            <Drawer.Screen
+            <Drawer.Screen 
               name={category.name}
               component={ProductScreen}
               initialParams={{categoryId: category.categoryId}}

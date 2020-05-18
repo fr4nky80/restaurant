@@ -1,0 +1,7 @@
+{
+    "rnpm": {
+        "assets": [
+          "./assets/fonts"
+        ]
+      }
+}

@@ -1,19 +1,37 @@
 import React, {useState, useEffect} from 'react';
 import API from '../../api/restaurant';
-import {FlatList, StyleSheet, View, Icon, Image} from 'react-native';
+import {FlatList, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
 import {useRoute} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ProductItem from './item';
 
 function LogoTitle() {
+  const navigation = useNavigation();
+  const onPress = () => navigation.toggleDrawer();
   return (
+    <>
+    <View style={styles.containerHeader}>
+    <TouchableOpacity
+        style={styles.button}
+        onPress={onPress}
+      >
+      <Image source={{
+        uri:
+          'https://media-cdn.tripadvisor.com/media/photo-p/18/11/41/73/logo-nuevo-2019.jpg',
+      }}
+      style={{width: 40, height: 40}}/>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.container}>
     <Image
       source={{
         uri:
-          // 'https://media-cdn.tripadvisor.com/media/photo-s/10/36/4a/ea/restaurante-casa-carreno.jpg',
           'https://media-cdn.tripadvisor.com/media/photo-p/18/11/41/73/logo-nuevo-2019.jpg',
       }}
       style={{width: 220, height: 130}}
     />
+    </View>
+    </>
   );
 }
 
@@ -44,7 +62,7 @@ export const ProductScreen = () => {
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.containerHeader}>
         <LogoTitle />
       </View>
       <FlatList
@@ -60,6 +78,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20
+  },
+  containerHeader: {
+    textAlign: 'left',
   },
   item: {
     padding: 10,
