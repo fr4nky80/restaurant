@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: "#CCC"
   },
   title: {
     padding: 10,
     fontSize: 20,
-    fontFamily: 'Iowan Old Style',
+    fontFamily: 'Merriweather-BlackItalic',
     height: 44,
     width: 310,
     textTransform: 'uppercase',
@@ -33,11 +33,14 @@ const styles = StyleSheet.create({
     color: 'gray',
     margin: 10,
     fontSize: 15,
-    fontFamily: 'Iowan Old Style',
+    fontFamily: 'Merriweather-Light',
   },
   price: {
     fontSize: 20,
+    fontWeight: 'bold',
     width: 70,
-    textAlignVertical: "center"
+    textAlignVertical: "center",
+    textAlign: "right",
+    fontFamily: 'Merriweather-BlackItalic'
   },
 });

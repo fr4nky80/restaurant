@@ -16,9 +16,8 @@ namespace Restaurant.Api.Infrastructure.Models
         public Guid ProductId { get; set; }
         public Guid CategoryId { get; set; }
         public string Title { get; set; }
-
         public decimal Price { get; set; }
-
         public string Description { get; set; }
+        public string Allergens { get; set; }
     }
 }

@@ -4,7 +4,6 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {ProductScreen} from './pages/Products/products';
 import API from './api/restaurant';
-import {Header} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 export default function App() {
