@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Restaurant.Api.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitMariaDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,9 @@ namespace Restaurant.Api.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    SubTitle = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,7 +29,8 @@ namespace Restaurant.Api.Migrations
                     CategoryId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    Allergens = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,7 +46,7 @@ namespace Restaurant.Api.Migrations
                     RestaurantName = table.Column<string>(nullable: true),
                     Logo = table.Column<string>(nullable: true),
                     FontFamily = table.Column<string>(nullable: true),
-                    IsPredeterminate = table.Column<bool>(nullable: false)
+                    IsDefault = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

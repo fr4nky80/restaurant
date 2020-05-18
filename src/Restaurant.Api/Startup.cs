@@ -48,9 +48,9 @@ namespace Restaurant.Api
             services.AddScoped<IMenuAppService, MenuAppService>();
             services.AddScoped<IRestaurantAppService, RestaurantAppService>();
 
-          
 
-            services.AddDbContext<RestaurantContext>(options => options.UseSqlite("Data Source=restaurant.db"));
+            var connectionString = Configuration.GetConnectionString("Restaurant");
+            services.AddDbContext<RestaurantContext>(options => options.UseMySql(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

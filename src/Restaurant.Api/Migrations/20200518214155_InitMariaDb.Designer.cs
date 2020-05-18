@@ -9,14 +9,15 @@ using Restaurant.Api.Infrastructure.Data;
 namespace Restaurant.Api.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20200518202531_AddAllergens")]
-    partial class AddAllergens
+    [Migration("20200518214155_InitMariaDb")]
+    partial class InitMariaDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Restaurant.Api.Infrastructure.Models.Category", b =>
                 {
