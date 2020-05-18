@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import API from '../../api/restaurant';
-import {FlatList, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ProductItem from './item';
 
 function LogoTitle() {
@@ -10,27 +16,26 @@ function LogoTitle() {
   const onPress = () => navigation.toggleDrawer();
   return (
     <>
-    <View style={styles.containerHeader}>
-    <TouchableOpacity
-        style={styles.button}
-        onPress={onPress}
-      >
-      <Image source={{
-        uri:
-          'https://media-cdn.tripadvisor.com/media/photo-p/18/11/41/73/logo-nuevo-2019.jpg',
-      }}
-      style={{width: 40, height: 40}}/>
-      </TouchableOpacity>
-    </View>
-    <View style={styles.container}>
-    <Image
-      source={{
-        uri:
-          'https://media-cdn.tripadvisor.com/media/photo-p/18/11/41/73/logo-nuevo-2019.jpg',
-      }}
-      style={{width: 220, height: 130}}
-    />
-    </View>
+      <View style={styles.containerHeader}>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <Image
+            source={{
+              uri:
+                'https://media-cdn.tripadvisor.com/media/photo-p/18/11/41/73/logo-nuevo-2019.jpg',
+            }}
+            style={{width: 40, height: 40}}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
+        <Image
+          source={{
+            uri:
+              'https://media-cdn.tripadvisor.com/media/photo-p/18/11/41/73/logo-nuevo-2019.jpg',
+          }}
+          style={{width: 220, height: 130}}
+        />
+      </View>
     </>
   );
 }
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20
+    padding: 20,
   },
   containerHeader: {
     textAlign: 'left',
